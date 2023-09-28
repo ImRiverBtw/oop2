@@ -1,0 +1,16 @@
+<diagram program="umletino" version="15.1"><zoom_level>18</zoom_level><element><id>UMLClass</id><coordinates><x>439</x><y>524</y><w>378</w><h>180</h></coordinates><panel_attributes>Comic
+--
+-name: String
+-rating: double
+-author: String
+-description: String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1033</x><y>506</y><w>378</w><h>198</h></coordinates><panel_attributes>Chapter
+--
+-belongsTo: Comic
+-title: String
+-chapterNumber: int
+releaseDate: LocalDate
+isLiked: boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>799</x><y>560</y><w>270</w><h>90</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+m2=1..n
+Is part of</panel_attributes><additional_attributes>10;20;130;20</additional_attributes></element></diagram>

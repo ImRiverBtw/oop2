@@ -7,7 +7,7 @@ public class Main {
 
     public static String studentNaam = "naam";
     public static String studentNummer = "studentnummer";
-    private static boolean jaIkAccepteer = false;
+    private static boolean jaIkAccepteer = true;
 
     public static boolean launchedFromMain;
 
