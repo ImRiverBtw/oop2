@@ -5,8 +5,8 @@ import java.time.LocalDate;
 
 public class Main {
 
-    public static String studentNaam = "naam";
-    public static String studentNummer = "studentnummer";
+    public static String studentNaam = "Robin Hoogendijk";
+    public static String studentNummer = "500900813";
     private static boolean jaIkAccepteer = true;
 
     public static boolean launchedFromMain;
