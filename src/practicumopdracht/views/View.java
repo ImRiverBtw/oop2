@@ -15,6 +15,6 @@ public class View {
     }
 
     public Parent getRoot(){
-        return this.root;
+        return root;
     }
 }
