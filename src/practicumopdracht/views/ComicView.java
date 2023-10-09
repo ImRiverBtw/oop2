@@ -4,6 +4,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import practicumopdracht.models.Comic;
 
 public class ComicView extends View {
     public ComicView() {
@@ -16,7 +17,7 @@ public class ComicView extends View {
 
         VBox comicListContainer = new VBox();
         Label listLabel = new Label("Comic List:");
-        ListView comicList = new ListView();
+        ListView<Comic> comicList = new ListView<>();
         Button addButton = new Button("Add Comic");
         comicListContainer.getChildren().addAll(listLabel, comicList, addButton);
 
@@ -24,6 +25,7 @@ public class ComicView extends View {
         HBox nameContainer = new HBox();
         Label nameLabel = new Label("Name:");
         TextField nameField = new TextField();
+        Button chapterButton = new Button("Check Chapters");
         nameContainer.getChildren().addAll(nameLabel, nameField);
 
         Label ratingLabel = new Label("Rating:");
@@ -49,7 +51,8 @@ public class ComicView extends View {
         HBox buttonContainer = new HBox();
         Button saveButton = new Button("Save");
         Button delButton = new Button("Delete");
-        buttonContainer.getChildren().addAll(delButton, saveButton);
+        Button inspectButton = new Button("Inspect Chapters");
+        buttonContainer.getChildren().addAll(delButton, saveButton, inspectButton);
 
         infoContainer.getChildren().addAll(nameContainer, ratingLabel, ratingContainer, authorContainer, descriptionLabel, descriptionArea, buttonContainer);
 
