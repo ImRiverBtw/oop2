@@ -26,9 +26,9 @@ public class MainApplication extends Application {
         stage.setWidth(WIDTH);
         stage.setHeight(HEIGTH);
         MainApplication.stage = stage;
-        Controller comicController = new ComicController();
-        Controller chapterController = new ChapterController();
-        switchController(comicController);
+        Controller comicController = new ComicController(this);
+        Controller chapterController = new ChapterController(this);
+        switchController(chapterController);
         MainApplication.stage.show();
 
     }

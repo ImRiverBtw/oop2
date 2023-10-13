@@ -1,13 +1,16 @@
 package practicumopdracht.controllers;
 
 import javafx.scene.control.Alert;
+import practicumopdracht.MainApplication;
 import practicumopdracht.views.ComicView;
 import practicumopdracht.views.View;
 
 public class ComicController extends Controller{
 
     private ComicView view;
-    public ComicController() {
+    private MainApplication mainApplication;
+    public ComicController(MainApplication mainApplication) {
+        this.mainApplication = mainApplication;
         view = new ComicView();
 
         view.getAddButton().setOnAction(actionEvent -> handleAddButton());
@@ -28,7 +31,7 @@ public class ComicController extends Controller{
         view.getDelAlert().show();
     }
     private void handleInspectButton(){
-        view.getInspectAlert().show();
+        mainApplication.switchController(new ChapterController(mainApplication));
     }
     private void handleRatingSlider(){
         view.getRatingAlert().show();
