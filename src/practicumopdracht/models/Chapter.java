@@ -16,4 +16,17 @@ public class Chapter {
         this.releaseDate = releaseDate;
         this.isLiked = isLiked;
     }
-}
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("From: " + belongsTo.getName() + "\n");
+        sb.append("Title: " + title + "\n");
+        sb.append("Chapter:" + chapterNumber + "\n");
+        sb.append("releasedate: " + releaseDate.toString() + "\n");
+        sb.append("Liked: " + isLiked);
+
+        return sb.toString();
+    }
+};
