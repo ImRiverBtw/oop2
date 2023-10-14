@@ -83,7 +83,7 @@ public class ChapterController extends Controller{
         }
         throwSafeAlert(alert, isError);
     }
-    public void throwSafeAlert(String alert, boolean isError){
+    private void throwSafeAlert(String alert, boolean isError){
         if(isError){
             view.getSaveAlert().setContentText(alert);
             view.getSaveAlert().setAlertType(Alert.AlertType.WARNING);

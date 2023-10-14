@@ -55,13 +55,13 @@ public class ComicView extends View {
         HBox ratingContainer = new HBox();
 
         //configures slider
-        ratingSlider = new Slider(1, 5, 3);
+        ratingSlider = new Slider(1, 5, 1);
         ratingSlider.setShowTickMarks(true);
         ratingSlider.setShowTickLabels(true);
         ratingSlider.setMajorTickUnit(1.0f);
         ratingSlider.setMinorTickCount(1);
         ratingSlider.setSnapToTicks(true);
-        ratingViewLabel = new Label("x");
+        ratingViewLabel = new Label("1.0 ★");
         ratingContainer.getChildren().addAll(ratingSlider, ratingViewLabel);
 
         HBox authorContainer = new HBox();

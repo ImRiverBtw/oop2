@@ -28,7 +28,7 @@ public class MainApplication extends Application {
         MainApplication.stage = stage;
         Controller comicController = new ComicController(this);
         Controller chapterController = new ChapterController(this);
-        switchController(chapterController);
+        switchController(comicController);
         MainApplication.stage.show();
 
     }
