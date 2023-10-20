@@ -29,4 +29,24 @@ public class Chapter {
 
         return sb.toString();
     }
+
+    public Comic getBelongsTo() {
+        return belongsTo;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getChapterNumber() {
+        return chapterNumber;
+    }
+
+    public LocalDate getReleaseDate() {
+        return releaseDate;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
 };

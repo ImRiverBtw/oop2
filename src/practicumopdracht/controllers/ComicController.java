@@ -8,6 +8,7 @@ import practicumopdracht.views.ComicView;
 import practicumopdracht.views.View;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class ComicController extends Controller{
 
@@ -22,6 +23,11 @@ public class ComicController extends Controller{
         view.getDelButton().setOnAction(actionEvent -> handleDelButton());
         view.getInspectButton().setOnAction(actionEvent -> handleInspectButton());
         view.getRatingSlider().setOnMouseReleased(mouseEvent -> handleRatingSlider());
+
+        ArrayList<Comic> comics = new ArrayList<>();
+        comics.add(new Comic("comic 1", 4.5, "Mark Rutte", "in een wereld"));
+        comics.add(new Comic("comic 2", 4.5, "obama", "maar mensen zijn apen"));
+        comics.add(new Comic("comic 3", 4.5, "dieuwertje", "vies bitter"));
     }
 
     private void handleAddButton(){

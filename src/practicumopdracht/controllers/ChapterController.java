@@ -29,6 +29,8 @@ public class ChapterController extends Controller{
         view.getReleaseDatePicker().setOnAction(actionEvent -> handleDatePicker());
     }
 
+
+
     public void handleAddButton(){
         view.getAddAlert().show();
     }
