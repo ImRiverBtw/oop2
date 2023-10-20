@@ -1,5 +1,7 @@
 package practicumopdracht.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import practicumopdracht.MainApplication;
 import practicumopdracht.models.Chapter;
@@ -24,10 +26,8 @@ public class ComicController extends Controller{
         view.getInspectButton().setOnAction(actionEvent -> handleInspectButton());
         view.getRatingSlider().setOnMouseReleased(mouseEvent -> handleRatingSlider());
 
-        ArrayList<Comic> comics = new ArrayList<>();
-        comics.add(new Comic("comic 1", 4.5, "Mark Rutte", "in een wereld"));
-        comics.add(new Comic("comic 2", 4.5, "obama", "maar mensen zijn apen"));
-        comics.add(new Comic("comic 3", 4.5, "dieuwertje", "vies bitter"));
+        ArrayList<Comic> comics = (ArrayList<Comic>) MainApplication.getComicDAO().getAll();
+        view.getComicList().setItems((ObservableList<Comic>) comics);
     }
 
     private void handleAddButton(){

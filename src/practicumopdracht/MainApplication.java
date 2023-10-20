@@ -6,18 +6,16 @@ import javafx.stage.Stage;
 import practicumopdracht.controllers.ChapterController;
 import practicumopdracht.controllers.ComicController;
 import practicumopdracht.controllers.Controller;
-import practicumopdracht.data.ChapterDAO;
-import practicumopdracht.data.ComicDAO;
-import practicumopdracht.data.DAO;
+import practicumopdracht.data.*;
 
 public class MainApplication extends Application {
     private String TITLE = String.format("Practicumopdracht OOP2 - %s", Main.studentNaam);
     private int WIDTH = 640;
     private int HEIGTH = 480;
     private static Stage stage = new Stage();
-    private static ComicDAO comicDAO;
+    private static ComicDAO comicDAO = new DummyComicDAO();
 
-    private static ChapterDAO chapterDAO;
+    private static ChapterDAO chapterDAO = new DummyChapterDAO();
 
 
     @Override
@@ -35,6 +33,8 @@ public class MainApplication extends Application {
         Controller comicController = new ComicController(this);
         Controller chapterController = new ChapterController(this);
         switchController(comicController);
+        comicDAO.load();
+        chapterDAO.load();
         MainApplication.stage.show();
 
     }
