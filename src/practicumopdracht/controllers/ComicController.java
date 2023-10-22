@@ -25,9 +25,13 @@ public class ComicController extends Controller{
         view.getDelButton().setOnAction(actionEvent -> handleDelButton());
         view.getInspectButton().setOnAction(actionEvent -> handleInspectButton());
         view.getRatingSlider().setOnMouseReleased(mouseEvent -> handleRatingSlider());
-
-        ArrayList<Comic> comics = (ArrayList<Comic>) MainApplication.getComicDAO().getAll();
-        view.getComicList().setItems((ObservableList<Comic>) comics);
+//        ArrayList<Comic> comics = (ArrayList<Comic>) MainApplication.getComicDAO().getAll();
+        ArrayList<Comic> comics = new ArrayList<>();
+        comics.add(new Comic("comic 1", 4.5, "Mark Rutte", "in een wereld"));
+        comics.add(new Comic("comic 2", 4.5, "obama", "maar mensen zijn apen"));
+        comics.add(new Comic("comic 3", 4.5, "dieuwertje", "vies bitter"));
+        ObservableList<Comic> comicObservableList = FXCollections.observableArrayList(comics);
+        view.getComicList().setItems(comicObservableList);
     }
 
     private void handleAddButton(){
@@ -61,13 +65,18 @@ public class ComicController extends Controller{
             double rating = view.getRatingSlider().getValue();
             String author = view.getAuthorField().getText();
             String description = view.getDescriptionArea().getText();
+            Comic comic = view.getComicList().getSelectionModel().getSelectedItem();
+            comic.setAuthor(author);
+            comic.setRating(rating);
+            comic.setName(name);
+            comic.setDescription(description);
+            alert = comic.toString();
+            view.getComicList().refresh();
 
-            Comic newComic = new Comic(name, rating, author, description);
-            alert = newComic.toString();
-            view.getNameField().setText("");
-            view.getAuthorField().setText("");
-            view.getDescriptionArea().setText("");
-            view.getRatingSlider().setValue(1.0);
+//            view.getNameField().setText("");
+//            view.getAuthorField().setText("");
+//            view.getDescriptionArea().setText("");
+//            view.getRatingSlider().setValue(1.0);
 
         } else{
             alert = sb.toString();

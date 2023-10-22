@@ -15,11 +15,9 @@ public class Comic {
 
     @Override
     public String toString(){
-        StringBuilder sb = new StringBuilder();
+        String comic = String.format("%s, %s, %.1f", name, author, rating);
 
-        sb.append(""+"");
-
-        return sb.toString();
+        return comic;
     };
 
     public String getName() {

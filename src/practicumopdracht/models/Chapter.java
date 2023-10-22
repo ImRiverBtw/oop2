@@ -21,7 +21,6 @@ public class Chapter {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("From: " + belongsTo.getName() + "\n");
         sb.append("Title: " + title + "\n");
         sb.append("Chapter:" + chapterNumber + "\n");
         sb.append("releasedate: " + releaseDate.toString() + "\n");

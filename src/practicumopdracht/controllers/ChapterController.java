@@ -1,14 +1,19 @@
 package practicumopdracht.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import practicumopdracht.Main;
 import practicumopdracht.MainApplication;
+import practicumopdracht.data.ComicDAO;
 import practicumopdracht.models.Chapter;
 import practicumopdracht.models.Comic;
 import practicumopdracht.views.ChapterView;
 import practicumopdracht.views.View;
 
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
 
 public class ChapterController extends Controller{
 
@@ -27,6 +32,13 @@ public class ChapterController extends Controller{
         view.getBackButton().setOnAction(actionEvent -> handleBackButton());
         view.getLikedBox().setOnAction(actionEvent -> handleLikedBox());
         view.getReleaseDatePicker().setOnAction(actionEvent -> handleDatePicker());
+//        ArrayList<Chapter> chapters = (ArrayList<Chapter>) MainApplication.getChapterDAO().getAll();
+        ArrayList<Chapter> chapters = new ArrayList<>();
+        chapters.add(new Chapter(null, "De tiet van Adam", 1, LocalDate.now(), true));
+        chapters.add(new Chapter(null, "De melk van Adam", 2, LocalDate.now(), true));
+        chapters.add(new Chapter(null, "Peter Griffin vs The Nazi's", 1, LocalDate.of(1739, Month.SEPTEMBER, 4), true));
+        ObservableList<Chapter> chapterObservableList = FXCollections.observableArrayList(chapters);
+        view.getChapterListView().setItems(chapterObservableList);
     }
 
 

@@ -33,8 +33,8 @@ public class MainApplication extends Application {
         Controller comicController = new ComicController(this);
         Controller chapterController = new ChapterController(this);
         switchController(comicController);
-        comicDAO.load();
-        chapterDAO.load();
+//        comicDAO.load();
+//        chapterDAO.load();
         MainApplication.stage.show();
 
     }
