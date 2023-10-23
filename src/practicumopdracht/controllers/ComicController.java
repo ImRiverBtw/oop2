@@ -4,18 +4,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import practicumopdracht.MainApplication;
-import practicumopdracht.models.Chapter;
 import practicumopdracht.models.Comic;
 import practicumopdracht.views.ComicView;
 import practicumopdracht.views.View;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class ComicController extends Controller{
+public class ComicController extends Controller {
 
     private ComicView view;
     private MainApplication mainApplication;
+
     public ComicController(MainApplication mainApplication) {
         this.mainApplication = mainApplication;
         view = new ComicView();
@@ -34,10 +32,16 @@ public class ComicController extends Controller{
         view.getComicList().setItems(comicObservableList);
     }
 
-    private void handleAddButton(){
+    private void handleAddButton() {
+        view.getNameField().setText("");
+        view.getAuthorField().setText("");
+        view.getDescriptionArea().setText("");
+        view.getRatingSlider().setValue(1.0);
+        view.getComicList().getSelectionModel().clearSelection();
         view.getAddAlert().show();
     }
-    private void handleSaveButton(){
+
+    private void handleSaveButton() {
         boolean isValidName = !view.getNameField().getText().trim().isEmpty();
         boolean isValidAuthor = !view.getAuthorField().getText().trim().isEmpty();
         boolean isValidDescription = !view.getDescriptionArea().getText().trim().isEmpty();
@@ -46,50 +50,52 @@ public class ComicController extends Controller{
         StringBuilder sb = new StringBuilder();
         sb.append("One ore more errors have occured while saving this Chapter:\n \n");
 
-        if (!isValidName){
+        if (!isValidName) {
             sb.append("-Field \"Name\" can not be empty! \n");
             isError = true;
         }
-        if (!isValidAuthor){
+        if (!isValidAuthor) {
             sb.append("-Field \"Author\" can not be empty! \n");
             isError = true;
         }
-        if (!isValidDescription){
+        if (!isValidDescription) {
             sb.append("-Field \"Description\" can not be empty! \n");
             isError = true;
         }
 
         String alert;
-        if(!isError){
+        if (!isError) {
             String name = view.getNameField().getText();
             double rating = view.getRatingSlider().getValue();
             String author = view.getAuthorField().getText();
             String description = view.getDescriptionArea().getText();
             Comic comic = view.getComicList().getSelectionModel().getSelectedItem();
-            comic.setAuthor(author);
-            comic.setRating(rating);
-            comic.setName(name);
-            comic.setDescription(description);
+            if (comic == null){
+                comic = new Comic(name, rating, author, description);
+                view.getComicList().getItems().add(comic);
+            } else {
+                comic.setAuthor(author);
+                comic.setRating(rating);
+                comic.setName(name);
+                comic.setDescription(description);
+                view.getComicList().refresh();
+            }
+
             alert = comic.toString();
-            view.getComicList().refresh();
 
-//            view.getNameField().setText("");
-//            view.getAuthorField().setText("");
-//            view.getDescriptionArea().setText("");
-//            view.getRatingSlider().setValue(1.0);
 
-        } else{
+        } else {
             alert = sb.toString();
         }
 
         throwSafeAlert(alert, isError);
     }
 
-    private void throwSafeAlert(String alert, boolean isError){
-        if(isError){
+    private void throwSafeAlert(String alert, boolean isError) {
+        if (isError) {
             view.getSaveAlert().setContentText(alert);
             view.getSaveAlert().setAlertType(Alert.AlertType.WARNING);
-        } else{
+        } else {
             view.getSaveAlert().setContentText("Comic saved succesfully:\n\n" + alert);
             view.getSaveAlert().setAlertType(Alert.AlertType.INFORMATION);
         }
@@ -97,13 +103,22 @@ public class ComicController extends Controller{
         view.getSaveAlert().show();
     }
 
-    private void handleDelButton(){
-        view.getDelAlert().show();
+    private void handleDelButton() {
+        Comic comic = view.getComicList().getSelectionModel().getSelectedItem();
+        if (comic == null){
+            return;
+        } else{
+            view.getComicList().getItems().remove(comic);
+            view.getDelAlert().show();
+        }
+
     }
-    private void handleInspectButton(){
+
+    private void handleInspectButton() {
         mainApplication.switchController(new ChapterController(mainApplication));
     }
-    private void handleRatingSlider(){
+
+    private void handleRatingSlider() {
         double ratingValue = view.getRatingSlider().getValue();
         view.getRatingViewLabel().setText(String.valueOf(ratingValue) + " ★");
     }
