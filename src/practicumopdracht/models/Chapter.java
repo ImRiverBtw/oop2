@@ -48,4 +48,20 @@ public class Chapter {
     public boolean isLiked() {
         return isLiked;
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setChapterNumber(int chapterNumber) {
+        this.chapterNumber = chapterNumber;
+    }
+
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
 };

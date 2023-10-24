@@ -1,16 +1,14 @@
 package practicumopdracht.data;
 
-import practicumopdracht.models.Comic;
-
 import java.util.List;
 
 public interface DAO<T> {
 
     public List<T> getAll();
 
-    void addOrUpdate(T object);
+    void addOrUpdate(T model);
 
-    public void remove(T object);
+    public void remove(T model);
 
 
     public boolean save();

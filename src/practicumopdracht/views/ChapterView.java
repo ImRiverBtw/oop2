@@ -8,6 +8,8 @@ import javafx.scene.layout.VBox;
 import practicumopdracht.models.Chapter;
 import practicumopdracht.models.Comic;
 
+import java.util.Optional;
+
 public class ChapterView extends View {
 
     private Button addChptButton;
@@ -28,8 +30,9 @@ public class ChapterView extends View {
 
     private TextField titleField;
     private TextField chapterField;
+
     @Override
-    protected Parent initializeView(){
+    protected Parent initializeView() {
         VBox rootVbox = new VBox();
         HBox comboContainer = new HBox();
         Label comicName = new Label("Select Comic:");
@@ -82,8 +85,9 @@ public class ChapterView extends View {
         saveAlert = new Alert(Alert.AlertType.INFORMATION);
         saveAlert.setContentText("save button clicked");
 
-        deleteAlert = new Alert(Alert.AlertType.INFORMATION);
-        deleteAlert.setContentText("del button clicked");
+        deleteAlert = new Alert(Alert.AlertType.WARNING, "Are you sure that you want to delete this Chapter?", ButtonType.OK, ButtonType.CANCEL);
+        deleteAlert.setTitle("Delete Chapter Warning");
+
 
         backAlert = new Alert(Alert.AlertType.INFORMATION);
         backAlert.setContentText("back button clicked");

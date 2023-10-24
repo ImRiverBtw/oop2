@@ -1,43 +1,58 @@
 package practicumopdracht.controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import practicumopdracht.MainApplication;
+import practicumopdracht.data.ComicDAO;
+import practicumopdracht.data.DummyComicDAO;
 import practicumopdracht.models.Comic;
 import practicumopdracht.views.ComicView;
 import practicumopdracht.views.View;
+
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class ComicController extends Controller {
+    private ComicDAO comicDAO;
 
     private ComicView view;
     private MainApplication mainApplication;
 
     public ComicController(MainApplication mainApplication) {
+        comicDAO = MainApplication.getComicDAO();
         this.mainApplication = mainApplication;
         view = new ComicView();
 
+        view.getComicList().setOnMouseClicked(mouseEvent -> handleComicList());
         view.getAddButton().setOnAction(actionEvent -> handleAddButton());
         view.getSaveButton().setOnAction(actionEvent -> handleSaveButton());
         view.getDelButton().setOnAction(actionEvent -> handleDelButton());
         view.getInspectButton().setOnAction(actionEvent -> handleInspectButton());
         view.getRatingSlider().setOnMouseReleased(mouseEvent -> handleRatingSlider());
-//        ArrayList<Comic> comics = (ArrayList<Comic>) MainApplication.getComicDAO().getAll();
-        ArrayList<Comic> comics = new ArrayList<>();
-        comics.add(new Comic("comic 1", 4.5, "Mark Rutte", "in een wereld"));
-        comics.add(new Comic("comic 2", 4.5, "obama", "maar mensen zijn apen"));
-        comics.add(new Comic("comic 3", 4.5, "dieuwertje", "vies bitter"));
+
+        ArrayList<Comic> comics = comicDAO.getAll();
         ObservableList<Comic> comicObservableList = FXCollections.observableArrayList(comics);
         view.getComicList().setItems(comicObservableList);
     }
 
+    private void handleComicList() {
+        Comic comic = view.getComicList().getSelectionModel().getSelectedItem();
+        view.getNameField().setText(comic.getName());
+        view.getAuthorField().setText(comic.getAuthor());
+        view.getRatingSlider().setValue(comic.getRating());
+        view.getDescriptionArea().setText(comic.getDescription());
+    }
+
     private void handleAddButton() {
+        view.getComicList().getSelectionModel().clearSelection();
         view.getNameField().setText("");
         view.getAuthorField().setText("");
         view.getDescriptionArea().setText("");
         view.getRatingSlider().setValue(1.0);
-        view.getComicList().getSelectionModel().clearSelection();
         view.getAddAlert().show();
     }
 
@@ -48,7 +63,7 @@ public class ComicController extends Controller {
         boolean isError = false;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("One ore more errors have occured while saving this Chapter:\n \n");
+        sb.append("One ore more errors have occured while saving this Comic:\n \n");
 
         if (!isValidName) {
             sb.append("-Field \"Name\" can not be empty! \n");
@@ -70,7 +85,7 @@ public class ComicController extends Controller {
             String author = view.getAuthorField().getText();
             String description = view.getDescriptionArea().getText();
             Comic comic = view.getComicList().getSelectionModel().getSelectedItem();
-            if (comic == null){
+            if (comic == null) {
                 comic = new Comic(name, rating, author, description);
                 view.getComicList().getItems().add(comic);
             } else {
@@ -80,14 +95,11 @@ public class ComicController extends Controller {
                 comic.setDescription(description);
                 view.getComicList().refresh();
             }
-
             alert = comic.toString();
-
-
+            comicDAO.addOrUpdate(comic);
         } else {
             alert = sb.toString();
         }
-
         throwSafeAlert(alert, isError);
     }
 
@@ -99,23 +111,32 @@ public class ComicController extends Controller {
             view.getSaveAlert().setContentText("Comic saved succesfully:\n\n" + alert);
             view.getSaveAlert().setAlertType(Alert.AlertType.INFORMATION);
         }
-
         view.getSaveAlert().show();
     }
 
     private void handleDelButton() {
         Comic comic = view.getComicList().getSelectionModel().getSelectedItem();
-        if (comic == null){
+        if (comic == null) {
             return;
-        } else{
-            view.getComicList().getItems().remove(comic);
-            view.getDelAlert().show();
         }
-
+        Optional<ButtonType> result = view.getDelAlert().showAndWait();
+        if (result.get() == ButtonType.OK) {
+            System.out.println("deleted");
+            view.getComicList().getItems().remove(comic);
+            comicDAO.remove(comic);
+            MainApplication.getChapterDAO().getAllFor(comic).forEach(chapter -> {
+                MainApplication.getChapterDAO().remove(chapter);
+            });
+        }
     }
 
     private void handleInspectButton() {
-        mainApplication.switchController(new ChapterController(mainApplication));
+        Comic selectedComic = view.getComicList().getSelectionModel().getSelectedItem();
+        if (selectedComic == null) {
+            return;
+        }
+        MainApplication.setSelectedComic(selectedComic);
+        MainApplication.switchController(new ChapterController(mainApplication));
     }
 
     private void handleRatingSlider() {

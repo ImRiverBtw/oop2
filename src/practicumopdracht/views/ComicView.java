@@ -91,8 +91,11 @@ public class ComicView extends View {
         saveAlert = new Alert(Alert.AlertType.INFORMATION);
         saveAlert.setContentText("save button clicked");
 
-        delAlert = new Alert(Alert.AlertType.INFORMATION);
-        delAlert.setContentText("delete button clicked");
+        delAlert = new Alert(Alert.AlertType.WARNING,
+                "Are you sure that you want to delete this Comic?",
+                ButtonType.OK,
+                ButtonType.CANCEL);
+        delAlert.setTitle("Delete Comic");
         inspectAlert = new Alert(Alert.AlertType.INFORMATION);
         inspectAlert.setContentText("inspect button clicked");
 

@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Practicumopdracht" />
         <module name="student-19" />
+        <module name="practicumopdracht" />
       </profile>
     </annotationProcessing>
   </component>
