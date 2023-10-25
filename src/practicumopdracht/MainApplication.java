@@ -14,7 +14,7 @@ public class MainApplication extends Application {
     private int WIDTH = 640;
     private int HEIGTH = 480;
     private static Stage stage = new Stage();
-    private static ComicDAO comicDAO = new DummyComicDAO();
+    private static ComicDAO comicDAO = new ComicTextDAO();
 
     private static ChapterDAO chapterDAO = new DummyChapterDAO();
 
@@ -33,7 +33,7 @@ public class MainApplication extends Application {
         stage.setWidth(WIDTH);
         stage.setHeight(HEIGTH);
         comicDAO.load();
-        chapterDAO.load();
+        //chapterDAO.load();
         MainApplication.stage = stage;
         Controller comicController = new ComicController(this);
         Controller chapterController = new ChapterController(this);
