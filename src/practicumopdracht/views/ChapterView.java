@@ -2,6 +2,7 @@ package practicumopdracht.views;
 
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -24,16 +25,37 @@ public class ChapterView extends View {
     private Alert addAlert;
     private Alert saveAlert;
     private Alert deleteAlert;
+    private Alert closeAlert;
+
+    private Alert saveDAOAlert;
+    private Alert loadDAOAlert;
     private Alert backAlert;
     private Alert likedAlert;
     private Alert updateDateAlert;
 
     private TextField titleField;
     private TextField chapterField;
+    //MenuItem Declaration
+    private MenuItem saveDAOButton;
+    private MenuItem loadDAOButton;
+    private MenuItem closeButton;
 
     @Override
     protected Parent initializeView() {
+        BorderPane rootBorderPane = new BorderPane();
+        MenuBar menuBar = new MenuBar();
+
+        Menu fileMenu = new Menu("File");
+        saveDAOButton = new MenuItem("Save");
+        loadDAOButton = new MenuItem("Load");
+        closeButton = new MenuItem("Close Application");
+        fileMenu.getItems().addAll(saveDAOButton, loadDAOButton, closeButton);
+        menuBar.getMenus().add(fileMenu);
+        rootBorderPane.setTop(menuBar);
+
         VBox rootVbox = new VBox();
+        rootBorderPane.setCenter(rootVbox);
+
         HBox comboContainer = new HBox();
         Label comicName = new Label("Select Comic:");
         comicSelector = new ComboBox<>();
@@ -98,8 +120,26 @@ public class ChapterView extends View {
         updateDateAlert = new Alert(Alert.AlertType.INFORMATION);
         updateDateAlert.setContentText("date updated");
 
+        closeAlert = new Alert(Alert.AlertType.WARNING,
+                "If you close now all unsaved changes will be lost.\nDo you want to save before closing the application?",
+                ButtonType.YES,
+                ButtonType.NO);
+        closeAlert.setTitle("Close application");
 
-        return rootVbox;
+        saveDAOAlert = new Alert(Alert.AlertType.WARNING,
+                "Are you sure that you want to save?",
+                ButtonType.YES,
+                ButtonType.NO);
+        saveDAOAlert.setTitle("Save to DAO");
+
+        loadDAOAlert = new Alert(Alert.AlertType.WARNING,
+                "Are you sure that you want to load?",
+                ButtonType.YES,
+                ButtonType.NO);
+        loadDAOAlert.setTitle("Load from DAO");
+
+
+        return rootBorderPane;
     }
 
     public Button getAddChptButton() {
@@ -164,6 +204,30 @@ public class ChapterView extends View {
 
     public TextField getChapterField() {
         return chapterField;
+    }
+
+    public Alert getCloseAlert() {
+        return closeAlert;
+    }
+
+    public Alert getSaveDAOAlert() {
+        return saveDAOAlert;
+    }
+
+    public Alert getLoadDAOAlert() {
+        return loadDAOAlert;
+    }
+
+    public MenuItem getSaveDAOButton() {
+        return saveDAOButton;
+    }
+
+    public MenuItem getLoadDAOButton() {
+        return loadDAOButton;
+    }
+
+    public MenuItem getCloseButton() {
+        return closeButton;
     }
 }
 

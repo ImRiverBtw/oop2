@@ -20,7 +20,9 @@ public abstract class ComicDAO implements DAO<Comic> {
         return comics.get(id);
     }
 
-    ;
+    public int getComicId(Comic model){
+        return comics.indexOf(model);
+    }
 
     @Override
     public ArrayList<Comic> getAll() {
@@ -43,6 +45,8 @@ public abstract class ComicDAO implements DAO<Comic> {
         }
         comics.remove(model);
     }
+
+
 
     @Override
     public boolean save() {

@@ -1,11 +1,13 @@
 package practicumopdracht.controllers;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import practicumopdracht.Main;
 import practicumopdracht.MainApplication;
 import practicumopdracht.data.ComicDAO;
 import practicumopdracht.data.DummyComicDAO;
@@ -33,6 +35,9 @@ public class ComicController extends Controller {
         view.getDelButton().setOnAction(actionEvent -> handleDelButton());
         view.getInspectButton().setOnAction(actionEvent -> handleInspectButton());
         view.getRatingSlider().setOnMouseReleased(mouseEvent -> handleRatingSlider());
+        view.getSaveDAOButton().setOnAction(actionEvent -> handleSaveDAO());
+        view.getLoadDAOButton().setOnAction(actionEvent -> handleLoadDAO());
+        view.getCloseButton().setOnAction(actionEvent -> handleCloseButton());
 
         ArrayList<Comic> comics = comicDAO.getAll();
         ObservableList<Comic> comicObservableList = FXCollections.observableArrayList(comics);
@@ -144,8 +149,25 @@ public class ComicController extends Controller {
         view.getRatingViewLabel().setText(String.valueOf(ratingValue) + " ★");
     }
 
+
+
     @Override
     public View getView() {
         return view;
+    }
+
+    @Override
+    protected Alert getCloseAlert() {
+        return view.getCloseAlert();
+    }
+
+    @Override
+    protected Alert getSaveDAOAlert() {
+        return view.getSaveDAOAlert();
+    }
+
+    @Override
+    protected Alert getLoadDAOAlert() {
+        return view.getLoadDAOAlert();
     }
 }

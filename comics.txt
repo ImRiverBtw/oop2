@@ -1,13 +1,21 @@
-3
+5
 comic 1
-in een wereld
+in een wereld(newline)&newline&
 Mark Rutte
 4.5
 comic 2
-maar mensen zijn apen
+maar mensen zijn apen(newline)&newline&
 obama
 4.5
-comic 3
-vies bitter
-dieuwertje
-4.5
+Solo Leveling
+line1&newline&line2&newline&line3&newline&
+Chugong
+5.0
+Konosuba
+wow explosion&newline&
+mens
+4.0
+Super HXEROS
+never gonna give you up&newline&never gonna let you down
+Rudeus
+2.5

@@ -1,5 +1,6 @@
 package practicumopdracht.controllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -41,11 +42,13 @@ public class ChapterController extends Controller {
         view.getBackButton().setOnAction(actionEvent -> handleBackButton());
         view.getLikedBox().setOnAction(actionEvent -> handleLikedBox());
         view.getReleaseDatePicker().setOnAction(actionEvent -> handleDatePicker());
+        view.getSaveDAOButton().setOnAction(actionEvent -> handleSaveDAO());
+        view.getLoadDAOButton().setOnAction(actionEvent -> handleLoadDAO());
+        view.getCloseButton().setOnAction(actionEvent -> handleCloseButton());
+
 
         ArrayList<Comic> comics = comicDAO.getAll();
-        comics.forEach(comic -> {
-            view.getComicSelector().getItems().add(comic);
-        });
+        comics.forEach(comic -> view.getComicSelector().getItems().add(comic));
         view.getComicSelector().setValue(MainApplication.getSelectedComic());
         refreshChapters();
 
@@ -161,6 +164,20 @@ public class ChapterController extends Controller {
 
     private void handleLikedBox() {
 
+    }
+    @Override
+    protected Alert getCloseAlert() {
+        return view.getCloseAlert();
+    }
+
+    @Override
+    protected Alert getSaveDAOAlert() {
+        return view.getSaveDAOAlert();
+    }
+
+    @Override
+    protected Alert getLoadDAOAlert() {
+        return view.getLoadDAOAlert();
     }
 
     @Override

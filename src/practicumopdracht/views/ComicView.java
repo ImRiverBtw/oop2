@@ -2,6 +2,7 @@ package practicumopdracht.views;
 
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import practicumopdracht.models.Comic;
@@ -25,19 +26,41 @@ public class ComicView extends View {
 
     //Alert declaration;
     private Alert addAlert;
-    private Alert ratingAlert;
+//    private Alert ratingAlert;
     private Alert saveAlert;
+    private Alert closeAlert;
     private Alert delAlert;
-    private Alert inspectAlert;
+    private Alert saveDAOAlert;
+    private Alert loadDAOAlert;
+//    private Alert inspectAlert;
 
     //Misc declaration;
     private Label ratingViewLabel;
     private ListView<Comic> comicList;
 
+    //MenuItem Declaration
+    private MenuItem saveDAOButton;
+    private MenuItem loadDAOButton;
+    private MenuItem closeButton;
+
     //View contents
     @Override
     protected Parent initializeView() {
+        BorderPane rootBorderPane = new BorderPane();
+        MenuBar menuBar = new MenuBar();
+
+        Menu fileMenu = new Menu("File");
+        saveDAOButton = new MenuItem("Save");
+        loadDAOButton = new MenuItem("Load");
+        closeButton = new MenuItem("Close Application");
+        fileMenu.getItems().addAll(saveDAOButton, loadDAOButton, closeButton);
+        menuBar.getMenus().add(fileMenu);
+        rootBorderPane.setTop(menuBar);
+
+
+
         HBox rootHbox = new HBox();
+        rootBorderPane.setCenter(rootHbox);
 
         VBox comicListContainer = new VBox();
         Label listLabel = new Label("Comic List:");
@@ -84,22 +107,40 @@ public class ComicView extends View {
 
         addAlert = new Alert(Alert.AlertType.INFORMATION);
         addAlert.setContentText("add button clicked");
-
-        ratingAlert = new Alert(Alert.AlertType.INFORMATION);
-        ratingAlert.setContentText("rating adjusted");
-
+//
+//        ratingAlert = new Alert(Alert.AlertType.INFORMATION);
+//        ratingAlert.setContentText("rating adjusted");
+//
         saveAlert = new Alert(Alert.AlertType.INFORMATION);
         saveAlert.setContentText("save button clicked");
 
+        closeAlert = new Alert(Alert.AlertType.WARNING,
+                "If you close now all unsaved changes will be lost.\nDo you want to save before closing the application?",
+                ButtonType.YES,
+                ButtonType.NO);
+        closeAlert.setTitle("Close application");
+
         delAlert = new Alert(Alert.AlertType.WARNING,
-                "Are you sure that you want to delete this Comic?",
+                "Are you sure that you want to delete this comic?",
                 ButtonType.OK,
                 ButtonType.CANCEL);
         delAlert.setTitle("Delete Comic");
-        inspectAlert = new Alert(Alert.AlertType.INFORMATION);
-        inspectAlert.setContentText("inspect button clicked");
+//        inspectAlert = new Alert(Alert.AlertType.INFORMATION);
+//        inspectAlert.setContentText("inspect button clicked");
 
-        return rootHbox;
+        saveDAOAlert = new Alert(Alert.AlertType.WARNING,
+                "Are you sure that you want to save?",
+                ButtonType.YES,
+                ButtonType.NO);
+        saveDAOAlert.setTitle("Save to DAO");
+
+        loadDAOAlert = new Alert(Alert.AlertType.WARNING,
+                "Are you sure that you want to load?",
+                ButtonType.YES,
+                ButtonType.NO);
+        loadDAOAlert.setTitle("Load from DAO");
+
+        return rootBorderPane;
     }
 
     //Button getters
@@ -141,11 +182,11 @@ public class ComicView extends View {
     public Alert getAddAlert() {
         return addAlert;
     }
-
-    public Alert getRatingAlert() {
-        return ratingAlert;
-    }
-
+//
+//    public Alert getRatingAlert() {
+//        return ratingAlert;
+//    }
+//
     public Alert getSaveAlert() {
         return saveAlert;
     }
@@ -154,9 +195,21 @@ public class ComicView extends View {
         return delAlert;
     }
 
-    public Alert getInspectAlert() {
-        return inspectAlert;
+    public Alert getCloseAlert() {
+        return closeAlert;
     }
+    //    public Alert getInspectAlert() {
+//        return inspectAlert;
+//    }
+
+    public Alert getSaveDAOAlert() {
+        return saveDAOAlert;
+    }
+
+    public Alert getLoadDAOAlert() {
+        return loadDAOAlert;
+    }
+
 
     //Misc getters
 
@@ -166,5 +219,17 @@ public class ComicView extends View {
 
     public ListView<Comic> getComicList() {
         return comicList;
+    }
+
+    public MenuItem getSaveDAOButton() {
+        return saveDAOButton;
+    }
+
+    public MenuItem getLoadDAOButton() {
+        return loadDAOButton;
+    }
+
+    public MenuItem getCloseButton() {
+        return closeButton;
     }
 }
