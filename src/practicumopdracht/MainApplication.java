@@ -14,9 +14,9 @@ public class MainApplication extends Application {
     private int WIDTH = 640;
     private int HEIGTH = 480;
     private static Stage stage = new Stage();
-    private static ComicDAO comicDAO = new TextComicDAO();
+    private static ComicDAO comicDAO = new BinaryComicDAO();
 
-    private static ChapterDAO chapterDAO = new TextChapterDAO();
+    private static ChapterDAO chapterDAO = new ObjectChapterDAO();
 
     private static Comic selectedComic;
 
