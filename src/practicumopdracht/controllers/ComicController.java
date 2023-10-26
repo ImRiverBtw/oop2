@@ -23,11 +23,17 @@ public class ComicController extends Controller {
 
     private ComicView view;
     private MainApplication mainApplication;
+    private ObservableList<Comic> comicObservableList;
+    private ArrayList<Comic> comics;
 
     public ComicController(MainApplication mainApplication) {
         comicDAO = MainApplication.getComicDAO();
         this.mainApplication = mainApplication;
         view = new ComicView();
+
+        comics = comicDAO.getAll();
+        comicObservableList = FXCollections.observableArrayList(comics);
+        view.getComicList().setItems(comicObservableList);
 
         view.getComicList().setOnMouseClicked(mouseEvent -> handleComicList());
         view.getAddButton().setOnAction(actionEvent -> handleAddButton());
@@ -36,16 +42,28 @@ public class ComicController extends Controller {
         view.getInspectButton().setOnAction(actionEvent -> handleInspectButton());
         view.getRatingSlider().setOnMouseReleased(mouseEvent -> handleRatingSlider());
         view.getSaveDAOButton().setOnAction(actionEvent -> handleSaveDAO());
-        view.getLoadDAOButton().setOnAction(actionEvent -> handleLoadDAO());
+        view.getLoadDAOButton().setOnAction(actionEvent -> {
+            if (handleLoadDAO()){
+                refreshComics();
+                handleComicList();
+            }
+        });
         view.getCloseButton().setOnAction(actionEvent -> handleCloseButton());
 
-        ArrayList<Comic> comics = comicDAO.getAll();
-        ObservableList<Comic> comicObservableList = FXCollections.observableArrayList(comics);
-        view.getComicList().setItems(comicObservableList);
+
+    }
+
+    private void refreshComics(){
+        comicObservableList.setAll(comics);
+        view.getComicList().refresh();
     }
 
     private void handleComicList() {
         Comic comic = view.getComicList().getSelectionModel().getSelectedItem();
+        if (comic == null){
+            return;
+        }
+        System.out.println(comicDAO.getComicId(comic));
         view.getNameField().setText(comic.getName());
         view.getAuthorField().setText(comic.getAuthor());
         view.getRatingSlider().setValue(comic.getRating());

@@ -17,11 +17,13 @@ public abstract class ChapterDAO implements DAO<Chapter> {
 
     public ArrayList<Chapter> getAllFor(Comic model) {
         ArrayList<Chapter> sortedChapters = new ArrayList<>();
+        //System.out.println(chapters);
         chapters.forEach(chapter -> {
             if (chapter.getBelongsTo().equals(model)) {
                 sortedChapters.add(chapter);
             }
         });
+        //System.out.println("method validation" + sortedChapters);
         return sortedChapters;
     }
 

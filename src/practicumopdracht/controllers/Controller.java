@@ -17,8 +17,10 @@ public abstract class Controller {
     }
 
     protected void loadDAO(){
-        MainApplication.getChapterDAO().load();
+        MainApplication.getChapterDAO().getAll().clear();
+        MainApplication.getComicDAO().getAll().clear();
         MainApplication.getComicDAO().load();
+        MainApplication.getChapterDAO().load();
     }
     protected void handleSaveDAO(){
         Alert saveDAOAlert = getSaveDAOAlert();
@@ -28,12 +30,18 @@ public abstract class Controller {
         }
     }
 
-    protected void handleLoadDAO(){
+    protected boolean handleLoadDAO(){
         Alert loadDAOAlert = getLoadDAOAlert();
         Optional<ButtonType> result = loadDAOAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.YES) {
             loadDAO();
+            MainApplication.getComicDAO().getAll().forEach(comic -> {
+                if (comic.getName().equals(MainApplication.getSelectedComic().getName()) && comic.getAuthor().equals(MainApplication.getSelectedComic().getAuthor())){
+                    MainApplication.setSelectedComic(comic);
+                }});
+            return true;
         }
+        return false;
     }
     protected abstract Alert getCloseAlert();
     protected abstract Alert getSaveDAOAlert();
@@ -44,7 +52,7 @@ public abstract class Controller {
         Alert closeAlert = getCloseAlert();
         Optional<ButtonType> result = closeAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.YES) {
-            handleSaveDAO();
+            saveDAO();
             Platform.exit();
         } else if (result.isPresent() && result.get() == ButtonType.NO) {
             Platform.exit();

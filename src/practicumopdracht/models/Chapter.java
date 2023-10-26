@@ -1,9 +1,10 @@
 package practicumopdracht.models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Chapter {
-    private Comic belongsTo;
+public class Chapter implements Serializable {
+    private transient Comic belongsTo;
     private String title;
     private int chapterNumber;
     private LocalDate releaseDate;
@@ -21,6 +22,7 @@ public class Chapter {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
+        sb.append(getBelongsTo().getName());
         sb.append("Title: " + title + "\n");
         sb.append("Chapter:" + chapterNumber + "\n");
         sb.append("releasedate: " + releaseDate.toString() + "\n");

@@ -1,5 +1,8 @@
 package practicumopdracht.models;
 
+import java.beans.Transient;
+import java.io.Serializable;
+
 public class Comic {
     private String name;
     private double rating;

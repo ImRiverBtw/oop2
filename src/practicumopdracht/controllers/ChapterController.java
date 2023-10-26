@@ -27,12 +27,20 @@ public class ChapterController extends Controller {
     private ChapterView view;
     private MainApplication mainApplication;
 
+    private ObservableList<Chapter> chapterObservableList;
+    private ArrayList<Chapter> chapters;
+
 
     public ChapterController(MainApplication mainApplication) {
         chapterDAO = MainApplication.getChapterDAO();
         comicDAO = MainApplication.getComicDAO();
         this.mainApplication = mainApplication;
         view = new ChapterView();
+
+        chapters = chapterDAO.getAllFor(view.getComicSelector().getValue());
+        chapterObservableList = FXCollections.observableArrayList(chapters);
+        view.getChapterListView().setItems(chapterObservableList);
+        view.getChapterListView().refresh();
 
         view.getComicSelector().setOnAction(actionEvent -> refreshChapters());
         view.getChapterListView().setOnMouseClicked(mouseEvent -> handleChapterListView());
@@ -43,26 +51,35 @@ public class ChapterController extends Controller {
         view.getLikedBox().setOnAction(actionEvent -> handleLikedBox());
         view.getReleaseDatePicker().setOnAction(actionEvent -> handleDatePicker());
         view.getSaveDAOButton().setOnAction(actionEvent -> handleSaveDAO());
-        view.getLoadDAOButton().setOnAction(actionEvent -> handleLoadDAO());
+        view.getLoadDAOButton().setOnAction(actionEvent -> {
+            if(handleLoadDAO()){
+                view.getComicSelector().getItems().clear();
+                refreshChapters();
+                handleChapterListView();
+            }
+        });
         view.getCloseButton().setOnAction(actionEvent -> handleCloseButton());
 
-
-        ArrayList<Comic> comics = comicDAO.getAll();
-        comics.forEach(comic -> view.getComicSelector().getItems().add(comic));
-        view.getComicSelector().setValue(MainApplication.getSelectedComic());
         refreshChapters();
 
     }
 
     private void refreshChapters() {
-        ArrayList<Chapter> chapters = chapterDAO.getAllFor(view.getComicSelector().getValue());
-        ObservableList<Chapter> chapterObservableList = FXCollections.observableArrayList(chapters);
-        view.getChapterListView().setItems(chapterObservableList);
+        ArrayList<Comic> comics = comicDAO.getAll();
+        view.getComicSelector().getItems().addAll(comics);
+        view.getComicSelector().setValue(MainApplication.getSelectedComic());
+        Comic selectedComic = view.getComicSelector().getValue();
+        chapters = MainApplication.getChapterDAO().getAllFor(selectedComic);
+        chapterObservableList.setAll(chapters);
+        view.getChapterListView().refresh();
     }
 
 
     private void handleChapterListView() {
         Chapter chapter = view.getChapterListView().getSelectionModel().getSelectedItem();
+        if (chapter == null){
+            return;
+        }
         view.getTitleField().setText(chapter.getTitle());
         view.getChapterField().setText(String.valueOf(chapter.getChapterNumber()));
         view.getLikedBox().setSelected(chapter.isLiked());
@@ -76,7 +93,7 @@ public class ChapterController extends Controller {
         view.getReleaseDatePicker().setValue(null);
         view.getLikedBox().setSelected(false);
         view.getChapterField().setText("");
-        view.getComicSelector().setValue(null);
+        //view.getComicSelector().setValue(null);
     }
 
     private void handleDelButton() {
@@ -94,7 +111,7 @@ public class ChapterController extends Controller {
 
     private void handleSaveButton() {
         boolean isValidTitle = !view.getTitleField().getText().trim().isEmpty();
-        boolean isValidDate = view.getReleaseDatePicker().getValue() != null && view.getReleaseDatePicker().getValue().isBefore(LocalDate.now());
+        boolean isValidDate = view.getReleaseDatePicker().getValue() != null && view.getReleaseDatePicker().getValue().isBefore(LocalDate.now().plusDays(1));
         String chapterNr = view.getChapterField().getText();
         int intValue = 0;
         boolean isError = false;
@@ -134,6 +151,7 @@ public class ChapterController extends Controller {
                 chapter.setTitle(title);
                 chapter.setReleaseDate(releaseDate);
                 chapter.setLiked(isLiked);
+                view.getChapterListView().refresh();
             }
             chapterDAO.addOrUpdate(chapter);
             alert = chapter.toString();
