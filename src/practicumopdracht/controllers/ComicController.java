@@ -1,16 +1,12 @@
 package practicumopdracht.controllers;
 
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import practicumopdracht.Main;
 import practicumopdracht.MainApplication;
+import practicumopdracht.comparators.ComicRatingComparator;
 import practicumopdracht.data.ComicDAO;
-import practicumopdracht.data.DummyComicDAO;
 import practicumopdracht.models.Comic;
 import practicumopdracht.views.ComicView;
 import practicumopdracht.views.View;
@@ -25,6 +21,7 @@ public class ComicController extends Controller {
     private MainApplication mainApplication;
     private ObservableList<Comic> comicObservableList;
     private ArrayList<Comic> comics;
+    private boolean sortOrder;
 
     public ComicController(MainApplication mainApplication) {
         comicDAO = MainApplication.getComicDAO();
@@ -33,6 +30,7 @@ public class ComicController extends Controller {
 
         comics = comicDAO.getAll();
         comicObservableList = FXCollections.observableArrayList(comics);
+        updateSorting();
         view.getComicList().setItems(comicObservableList);
 
         view.getComicList().setOnMouseClicked(mouseEvent -> handleComicList());
@@ -49,13 +47,24 @@ public class ComicController extends Controller {
             }
         });
         view.getCloseButton().setOnAction(actionEvent -> handleCloseButton());
+        view.getSortAscending().setOnAction(actionEvent -> handleSort(true));
+        view.getSortDescending().setOnAction(actionEvent -> handleSort(false));
 
 
+    }
+
+    private void handleSort(boolean isAscending){
+        sortOrder = isAscending;
+        updateSorting();
     }
 
     private void refreshComics(){
         comicObservableList.setAll(comics);
         view.getComicList().refresh();
+        updateSorting();
+    }
+    private void updateSorting(){
+        FXCollections.sort(view.getComicList().getItems(), new ComicRatingComparator(sortOrder));
     }
 
     private void handleComicList() {
@@ -120,6 +129,7 @@ public class ComicController extends Controller {
             }
             alert = comic.toString();
             comicDAO.addOrUpdate(comic);
+            updateSorting();
         } else {
             alert = sb.toString();
         }
@@ -147,9 +157,7 @@ public class ComicController extends Controller {
             System.out.println("deleted");
             view.getComicList().getItems().remove(comic);
             comicDAO.remove(comic);
-            MainApplication.getChapterDAO().getAllFor(comic).forEach(chapter -> {
-                MainApplication.getChapterDAO().remove(chapter);
-            });
+            MainApplication.getChapterDAO().getAllFor(comic).forEach(chapter -> MainApplication.getChapterDAO().remove(chapter));
         }
     }
 
@@ -164,7 +172,7 @@ public class ComicController extends Controller {
 
     private void handleRatingSlider() {
         double ratingValue = view.getRatingSlider().getValue();
-        view.getRatingViewLabel().setText(String.valueOf(ratingValue) + " ★");
+        view.getRatingViewLabel().setText(ratingValue + " ★");
     }
 
 

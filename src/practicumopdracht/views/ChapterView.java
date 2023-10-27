@@ -9,8 +9,6 @@ import javafx.scene.layout.VBox;
 import practicumopdracht.models.Chapter;
 import practicumopdracht.models.Comic;
 
-import java.util.Optional;
-
 public class ChapterView extends View {
 
     private Button addChptButton;
@@ -40,6 +38,8 @@ public class ChapterView extends View {
     private MenuItem loadDAOButton;
     private MenuItem closeButton;
 
+    private ToggleGroup sortGroup;
+
     @Override
     protected Parent initializeView() {
         BorderPane rootBorderPane = new BorderPane();
@@ -52,6 +52,30 @@ public class ChapterView extends View {
         fileMenu.getItems().addAll(saveDAOButton, loadDAOButton, closeButton);
         menuBar.getMenus().add(fileMenu);
         rootBorderPane.setTop(menuBar);
+
+        HBox bottomHbox = new HBox();
+        Label sortLabel = new Label("Sorting method:");
+
+        sortGroup = new ToggleGroup();
+        RadioButton sortNrAscending = new RadioButton("Number ascending");
+        sortNrAscending.setUserData(1);
+        sortNrAscending.setToggleGroup(sortGroup);
+        sortNrAscending.setSelected(true);
+
+        RadioButton sortNrDescending = new RadioButton("Number descending");
+        sortNrDescending.setUserData(2);
+        sortNrDescending.setToggleGroup(sortGroup);
+
+        RadioButton sortDateAscending = new RadioButton("Date ascending");
+        sortDateAscending.setUserData(3);
+        sortDateAscending.setToggleGroup(sortGroup);
+
+        RadioButton sortDateDescending = new RadioButton("Date descending");
+        sortDateDescending.setUserData(4);
+        sortDateDescending.setToggleGroup(sortGroup);
+
+        bottomHbox.getChildren().addAll(sortLabel, sortNrAscending, sortNrDescending, sortDateAscending, sortDateDescending);
+        rootBorderPane.setBottom(bottomHbox);
 
         VBox rootVbox = new VBox();
         rootBorderPane.setCenter(rootVbox);
@@ -228,6 +252,10 @@ public class ChapterView extends View {
 
     public MenuItem getCloseButton() {
         return closeButton;
+    }
+
+    public ToggleGroup getSortGroup() {
+        return sortGroup;
     }
 }
 

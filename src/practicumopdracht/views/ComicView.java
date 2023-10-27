@@ -43,6 +43,9 @@ public class ComicView extends View {
     private MenuItem loadDAOButton;
     private MenuItem closeButton;
 
+    private MenuItem sortAscending;
+    private MenuItem sortDescending;
+
     //View contents
     @Override
     protected Parent initializeView() {
@@ -54,7 +57,13 @@ public class ComicView extends View {
         loadDAOButton = new MenuItem("Load");
         closeButton = new MenuItem("Close Application");
         fileMenu.getItems().addAll(saveDAOButton, loadDAOButton, closeButton);
-        menuBar.getMenus().add(fileMenu);
+
+        Menu sortMenu = new Menu("sort");
+        sortAscending = new MenuItem("Rating (Ascending)");
+        sortDescending = new MenuItem("Ratubg (Descending)");
+        sortMenu.getItems().addAll(sortAscending, sortDescending);
+
+        menuBar.getMenus().addAll(fileMenu, sortMenu);
         rootBorderPane.setTop(menuBar);
 
 
@@ -232,4 +241,13 @@ public class ComicView extends View {
     public MenuItem getCloseButton() {
         return closeButton;
     }
+
+    public MenuItem getSortAscending() {
+        return sortAscending;
+    }
+
+    public MenuItem getSortDescending() {
+        return sortDescending;
+    }
 }
+

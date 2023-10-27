@@ -1,22 +1,19 @@
 package practicumopdracht.controllers;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import practicumopdracht.Main;
 import practicumopdracht.MainApplication;
+import practicumopdracht.comparators.ChapterDateComparator;
+import practicumopdracht.comparators.ChapterNumberComparator;
 import practicumopdracht.data.ChapterDAO;
 import practicumopdracht.data.ComicDAO;
-import practicumopdracht.data.DummyChapterDAO;
 import practicumopdracht.models.Chapter;
 import practicumopdracht.models.Comic;
 import practicumopdracht.views.ChapterView;
 import practicumopdracht.views.View;
-
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -42,7 +39,7 @@ public class ChapterController extends Controller {
         view.getChapterListView().setItems(chapterObservableList);
         view.getChapterListView().refresh();
 
-        view.getComicSelector().setOnAction(actionEvent -> refreshChapters());
+        view.getComicSelector().setOnAction(actionEvent -> handleComicSelector());
         view.getChapterListView().setOnMouseClicked(mouseEvent -> handleChapterListView());
         view.getAddChptButton().setOnAction(actionEvent -> handleAddButton());
         view.getSaveChapter().setOnAction(actionEvent -> handleSaveButton());
@@ -59,9 +56,34 @@ public class ChapterController extends Controller {
             }
         });
         view.getCloseButton().setOnAction(actionEvent -> handleCloseButton());
+        view.getSortGroup().selectedToggleProperty().addListener((observableValue, oldToggle, newToggle) -> {
+            if(view.getSortGroup().getSelectedToggle() != null){
+                handleSort();
+            }
+        });
 
         refreshChapters();
 
+    }
+
+    private void handleSort(){
+        int sortType = (int) view.getSortGroup().getSelectedToggle().getUserData();
+        switch (sortType) {
+            case 1 -> FXCollections.sort(view.getChapterListView().getItems(), new ChapterNumberComparator(true));
+            case 2 -> FXCollections.sort(view.getChapterListView().getItems(), new ChapterNumberComparator(false));
+            case 3 -> FXCollections.sort(view.getChapterListView().getItems(), new ChapterDateComparator(true));
+            case 4 -> FXCollections.sort(view.getChapterListView().getItems(), new ChapterDateComparator(false));
+            default -> System.out.println("Invalid sort type: " + sortType);
+        }
+    }
+
+    private void handleComicSelector(){
+        Comic selectedComic = view.getComicSelector().getValue();
+        MainApplication.setSelectedComic(selectedComic);
+        chapters = MainApplication.getChapterDAO().getAllFor(selectedComic);
+        chapterObservableList.setAll(chapters);
+        handleSort();
+        view.getChapterListView().refresh();
     }
 
     private void refreshChapters() {
@@ -71,6 +93,8 @@ public class ChapterController extends Controller {
         Comic selectedComic = view.getComicSelector().getValue();
         chapters = MainApplication.getChapterDAO().getAllFor(selectedComic);
         chapterObservableList.setAll(chapters);
+        System.out.println(chapters);
+        handleSort();
         view.getChapterListView().refresh();
     }
 
@@ -154,6 +178,7 @@ public class ChapterController extends Controller {
                 view.getChapterListView().refresh();
             }
             chapterDAO.addOrUpdate(chapter);
+            handleSort();
             alert = chapter.toString();
         } else {
             alert = sb.toString();
