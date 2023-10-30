@@ -1,5 +1,6 @@
 package practicumopdracht.views;
 
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -66,16 +67,19 @@ public class ComicView extends View {
         menuBar.getMenus().addAll(fileMenu, sortMenu);
         rootBorderPane.setTop(menuBar);
 
-
-
         HBox rootHbox = new HBox();
+        rootHbox.setPadding(new Insets(4));
         rootBorderPane.setCenter(rootHbox);
 
         VBox comicListContainer = new VBox();
         Label listLabel = new Label("Comic List:");
+        ScrollPane listScrollPane = new ScrollPane();
         comicList = new ListView<>();
+        listScrollPane.setContent(comicList);
+        listScrollPane.setFitToHeight(true);
+        listScrollPane.setFitToWidth(true);
         addButton = new Button("Add Comic");
-        comicListContainer.getChildren().addAll(listLabel, comicList, addButton);
+        comicListContainer.getChildren().addAll(listLabel, listScrollPane, addButton);
 
         VBox infoContainer = new VBox();
         HBox nameContainer = new HBox();

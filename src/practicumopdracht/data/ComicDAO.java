@@ -3,7 +3,6 @@ package practicumopdracht.data;
 import practicumopdracht.models.Comic;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class ComicDAO implements DAO<Comic> {
 
@@ -20,7 +19,7 @@ public abstract class ComicDAO implements DAO<Comic> {
         return comics.get(id);
     }
 
-    public int getComicId(Comic model){
+    public int getComicId(Comic model) {
         return comics.indexOf(model);
     }
 
@@ -45,7 +44,6 @@ public abstract class ComicDAO implements DAO<Comic> {
         }
         comics.remove(model);
     }
-
 
 
     @Override

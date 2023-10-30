@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class ComicController extends Controller {
-    private ComicDAO comicDAO;
+    private final ComicDAO comicDAO;
 
-    private ComicView view;
-    private MainApplication mainApplication;
-    private ObservableList<Comic> comicObservableList;
-    private ArrayList<Comic> comics;
+    private final ComicView view;
+    private final MainApplication mainApplication;
+    private final ObservableList<Comic> comicObservableList;
+    private final ArrayList<Comic> comics;
     private boolean sortOrder;
 
     public ComicController(MainApplication mainApplication) {
@@ -95,7 +95,7 @@ public class ComicController extends Controller {
         boolean isError = false;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("One ore more errors have occured while saving this Comic:\n \n");
+        sb.append("One ore more errors have occurred while saving this Comic:\n \n");
 
         if (!isValidName) {
             sb.append("-Field \"Name\" can not be empty! \n");
@@ -141,7 +141,7 @@ public class ComicController extends Controller {
             view.getSaveAlert().setContentText(alert);
             view.getSaveAlert().setAlertType(Alert.AlertType.WARNING);
         } else {
-            view.getSaveAlert().setContentText("Comic saved succesfully:\n\n" + alert);
+            view.getSaveAlert().setContentText("Comic saved successfully:\n\n" + alert);
             view.getSaveAlert().setAlertType(Alert.AlertType.INFORMATION);
         }
         view.getSaveAlert().show();
@@ -153,7 +153,7 @@ public class ComicController extends Controller {
             return;
         }
         Optional<ButtonType> result = view.getDelAlert().showAndWait();
-        if (result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             System.out.println("deleted");
             view.getComicList().getItems().remove(comic);
             comicDAO.remove(comic);

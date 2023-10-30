@@ -1,5 +1,6 @@
 package practicumopdracht.views;
 
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -20,16 +21,12 @@ public class ChapterView extends View {
     private ComboBox<Comic> comicSelector;
     private ListView<Chapter> chapterListView;
 
-    private Alert addAlert;
     private Alert saveAlert;
     private Alert deleteAlert;
     private Alert closeAlert;
 
     private Alert saveDAOAlert;
     private Alert loadDAOAlert;
-    private Alert backAlert;
-    private Alert likedAlert;
-    private Alert updateDateAlert;
 
     private TextField titleField;
     private TextField chapterField;
@@ -54,6 +51,7 @@ public class ChapterView extends View {
         rootBorderPane.setTop(menuBar);
 
         HBox bottomHbox = new HBox();
+        bottomHbox.setPadding(new Insets(16));
         Label sortLabel = new Label("Sorting method:");
 
         sortGroup = new ToggleGroup();
@@ -78,6 +76,7 @@ public class ChapterView extends View {
         rootBorderPane.setBottom(bottomHbox);
 
         VBox rootVbox = new VBox();
+        rootVbox.setPadding(new Insets(4));
         rootBorderPane.setCenter(rootVbox);
 
         HBox comboContainer = new HBox();
@@ -87,9 +86,14 @@ public class ChapterView extends View {
 
         HBox chapterEditor = new HBox();
         VBox chapterList = new VBox();
+        ScrollPane listScrollPane = new ScrollPane();
         chapterListView = new ListView<>();
+        listScrollPane.setContent(chapterListView);
+        listScrollPane.setFitToHeight(true);
+        listScrollPane.setFitToWidth(true);
+
         addChptButton = new Button("Add Chapter");
-        chapterList.getChildren().addAll(chapterListView, addChptButton);
+        chapterList.getChildren().addAll(listScrollPane, addChptButton);
         VBox chapterInfo = new VBox();
 
         HBox titleContainer = new HBox();
@@ -125,7 +129,7 @@ public class ChapterView extends View {
 
         rootVbox.getChildren().addAll(comboContainer, chapterEditor);
 
-        addAlert = new Alert(Alert.AlertType.INFORMATION);
+        Alert addAlert = new Alert(Alert.AlertType.INFORMATION);
         addAlert.setContentText("add button clicked");
 
         saveAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -135,13 +139,13 @@ public class ChapterView extends View {
         deleteAlert.setTitle("Delete Chapter Warning");
 
 
-        backAlert = new Alert(Alert.AlertType.INFORMATION);
+        Alert backAlert = new Alert(Alert.AlertType.INFORMATION);
         backAlert.setContentText("back button clicked");
 
-        likedAlert = new Alert(Alert.AlertType.INFORMATION);
+        Alert likedAlert = new Alert(Alert.AlertType.INFORMATION);
         likedAlert.setContentText("checkbox (un)ticked");
 
-        updateDateAlert = new Alert(Alert.AlertType.INFORMATION);
+        Alert updateDateAlert = new Alert(Alert.AlertType.INFORMATION);
         updateDateAlert.setContentText("date updated");
 
         closeAlert = new Alert(Alert.AlertType.WARNING,
@@ -198,28 +202,12 @@ public class ChapterView extends View {
         return chapterListView;
     }
 
-    public Alert getAddAlert() {
-        return addAlert;
-    }
-
     public Alert getSaveAlert() {
         return saveAlert;
     }
 
     public Alert getDeleteAlert() {
         return deleteAlert;
-    }
-
-    public Alert getBackAlert() {
-        return backAlert;
-    }
-
-    public Alert getLikedAlert() {
-        return likedAlert;
-    }
-
-    public Alert getUpdateDateAlert() {
-        return updateDateAlert;
     }
 
     public TextField getTitleField() {

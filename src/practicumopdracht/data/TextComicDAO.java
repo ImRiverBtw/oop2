@@ -5,19 +5,17 @@ import practicumopdracht.models.Comic;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.nio.channels.OverlappingFileLockException;
-import java.nio.file.AccessDeniedException;
 import java.util.Scanner;
 
-public class TextComicDAO extends ComicDAO{
+public class TextComicDAO extends ComicDAO {
     @Override
     public boolean save() {
         File file = new File("comics.txt");
 
 
-        try(PrintWriter printWriter = new PrintWriter(file);){
+        try (PrintWriter printWriter = new PrintWriter(file)) {
             printWriter.println(comics.size());
-            for (Comic comic: comics){
+            for (Comic comic : comics) {
                 printWriter.println(comic.getName());
                 printWriter.println(comic.getDescription().replace("\n", "&newline&"));
                 printWriter.println(comic.getAuthor());
@@ -25,14 +23,11 @@ public class TextComicDAO extends ComicDAO{
             }
             return true;
 
-        }
-        catch(FileNotFoundException ex){
+        } catch (FileNotFoundException ex) {
             System.out.println("File not found!");
-        }
-        catch (SecurityException ex) {
+        } catch (SecurityException ex) {
             System.out.println("You don't have permission to access this file");
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             System.out.println("Unexpected error!");
             ex.printStackTrace();
         }
@@ -43,10 +38,10 @@ public class TextComicDAO extends ComicDAO{
     public boolean load() {
         File file = new File("comics.txt");
 
-        try(Scanner scanner = new Scanner(file);) {
+        try (Scanner scanner = new Scanner(file)) {
             int comicAmount = scanner.nextInt();
             scanner.nextLine();
-            for (int i = 0; i < comicAmount; i++){
+            for (int i = 0; i < comicAmount; i++) {
                 String name = scanner.nextLine().trim();
                 String singleLineDescription = scanner.nextLine().trim();
                 String[] lines = singleLineDescription.split("&newline&");
@@ -61,15 +56,12 @@ public class TextComicDAO extends ComicDAO{
                 Comic comic = new Comic(name, rating, author, restoredDescription);
                 super.comics.add(comic);
             }
-            return  true;
-        }
-        catch(FileNotFoundException ex){
+            return true;
+        } catch (FileNotFoundException ex) {
             System.out.println("File not found!");
-        }
-        catch (SecurityException ex) {
+        } catch (SecurityException ex) {
             System.out.println("You don't have permission to access this file");
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             System.out.println("Unexpected error!");
             ex.printStackTrace();
         }

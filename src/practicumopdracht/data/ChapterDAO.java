@@ -2,10 +2,7 @@ package practicumopdracht.data;
 
 import practicumopdracht.models.Chapter;
 import practicumopdracht.models.Comic;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class ChapterDAO implements DAO<Chapter> {
 
@@ -17,13 +14,11 @@ public abstract class ChapterDAO implements DAO<Chapter> {
 
     public ArrayList<Chapter> getAllFor(Comic model) {
         ArrayList<Chapter> sortedChapters = new ArrayList<>();
-        //System.out.println(chapters);
         chapters.forEach(chapter -> {
             if (chapter.getBelongsTo().equals(model)) {
                 sortedChapters.add(chapter);
             }
         });
-        //System.out.println("method validation" + sortedChapters);
         return sortedChapters;
     }
 

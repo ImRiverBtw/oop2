@@ -10,13 +10,13 @@ import practicumopdracht.data.*;
 import practicumopdracht.models.Comic;
 
 public class MainApplication extends Application {
-    private String TITLE = String.format("Practicumopdracht OOP2 - %s", Main.studentNaam);
-    private int WIDTH = 640;
-    private int HEIGTH = 480;
+    private final String TITLE = String.format("Practicumopdracht OOP2 - %s", Main.studentNaam);
+    private static final int WIDTH = 640;
+    private static final int HEIGTH = 480;
     private static Stage stage = new Stage();
-    private static ComicDAO comicDAO = new BinaryComicDAO();
+    private static final ComicDAO comicDAO = new BinaryComicDAO();
 
-    private static ChapterDAO chapterDAO = new ObjectChapterDAO();
+    private static final ChapterDAO chapterDAO = new ObjectChapterDAO();
 
     private static Comic selectedComic;
 
@@ -44,7 +44,10 @@ public class MainApplication extends Application {
     }
 
     public static void switchController(Controller controller) {
-        stage.setScene(new Scene(controller.getView().getRoot()));
+        Scene scene = new Scene(controller.getView().getRoot(), WIDTH, HEIGTH);
+        stage.setScene(scene);
+        stage.sizeToScene();
+        stage.show();
     }
 
     public static ComicDAO getComicDAO() {

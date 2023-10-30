@@ -18,13 +18,11 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class ChapterController extends Controller {
-    private ChapterDAO chapterDAO;
-    private ComicDAO comicDAO;
-
-    private ChapterView view;
-    private MainApplication mainApplication;
-
-    private ObservableList<Chapter> chapterObservableList;
+    private final ChapterDAO chapterDAO;
+    private final ComicDAO comicDAO;
+    private final ChapterView view;
+    private final MainApplication mainApplication;
+    private final ObservableList<Chapter> chapterObservableList;
     private ArrayList<Chapter> chapters;
 
 
@@ -126,7 +124,7 @@ public class ChapterController extends Controller {
             return;
         }
         Optional<ButtonType> result = view.getDeleteAlert().showAndWait();
-        if (result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             System.out.println("deleted");
             view.getChapterListView().getItems().remove(chapter);
             chapterDAO.remove(chapter);
@@ -141,7 +139,7 @@ public class ChapterController extends Controller {
         boolean isError = false;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("One ore more errors have occured while saving this Chapter:\n \n");
+        sb.append("One ore more errors have occurred while saving this Chapter:\n \n");
 
         if (!isValidTitle) {
             sb.append("-Field \"Title\" can not be empty! \n");
@@ -191,7 +189,7 @@ public class ChapterController extends Controller {
             view.getSaveAlert().setContentText(alert);
             view.getSaveAlert().setAlertType(Alert.AlertType.WARNING);
         } else {
-            view.getSaveAlert().setContentText("Chapter saved succesfully:\n\n" + alert);
+            view.getSaveAlert().setContentText("Chapter saved successfully:\n\n" + alert);
             view.getSaveAlert().setAlertType(Alert.AlertType.INFORMATION);
         }
         view.getSaveAlert().show();

@@ -5,9 +5,9 @@ import practicumopdracht.models.Chapter;
 import java.util.Comparator;
 
 public class ChapterNumberComparator implements Comparator<Chapter> {
-    private boolean isAscending;
+    private final boolean isAscending;
 
-    public ChapterNumberComparator(boolean isAscending){
+    public ChapterNumberComparator(boolean isAscending) {
         this.isAscending = isAscending;
     }
 

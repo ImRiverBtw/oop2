@@ -1,7 +1,5 @@
 package practicumopdracht.models;
 
-import java.beans.Transient;
-import java.io.Serializable;
 
 public class Comic {
     private String name;
@@ -18,10 +16,9 @@ public class Comic {
 
     @Override
     public String toString(){
-        String comic = String.format("%s, %s, %.1f", name, author, rating);
 
-        return comic;
-    };
+        return String.format("%s, %s, %.1f", name, author, rating);
+    }
 
     public String getName() {
         return name;

@@ -1,12 +1,9 @@
 package practicumopdracht.data;
 
-import practicumopdracht.Main;
 import practicumopdracht.MainApplication;
 import practicumopdracht.models.Chapter;
 import practicumopdracht.models.Comic;
-
 import java.io.*;
-import java.util.Objects;
 
 public class ObjectChapterDAO extends ChapterDAO {
 
@@ -19,11 +16,16 @@ public class ObjectChapterDAO extends ChapterDAO {
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)
         ) {
             objectOutputStream.writeInt(chapters.size());
-            for (Chapter chapter : chapters){
+            for (Chapter chapter : chapters) {
                 objectOutputStream.writeObject(chapter);
                 objectOutputStream.writeInt(MainApplication.getComicDAO().getComicId(chapter.getBelongsTo()));
             }
+        } catch (FileNotFoundException ex) {
+            System.out.println("File not found!");
+        } catch (SecurityException ex) {
+            System.out.println("You don't have permission to access this file");
         } catch (Exception ex) {
+            System.out.println("Unexpected error!");
             ex.printStackTrace();
         }
         return false;
@@ -34,8 +36,8 @@ public class ObjectChapterDAO extends ChapterDAO {
         File file = new File("chapters.obj");
         System.out.println("loading chapters");
 
-        try(FileInputStream fileInputStream = new FileInputStream(file);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)
+        try (FileInputStream fileInputStream = new FileInputStream(file);
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)
         ) {
             int chapterAmount = objectInputStream.readInt();
             for (int i = 0; i < chapterAmount; i++) {
@@ -44,7 +46,12 @@ public class ObjectChapterDAO extends ChapterDAO {
                 Chapter newChapter = new Chapter(belongsTo, chapter.getTitle(), chapter.getChapterNumber(), chapter.getReleaseDate(), chapter.isLiked());
                 chapters.add(newChapter);
             }
-        }catch(Exception ex){
+        } catch (FileNotFoundException ex) {
+            System.out.println("File not found!");
+        } catch (SecurityException ex) {
+            System.out.println("You don't have permission to access this file");
+        } catch (Exception ex) {
+            System.out.println("Unexpected error!");
             ex.printStackTrace();
         }
         return false;

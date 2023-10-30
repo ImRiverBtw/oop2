@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Chapter implements Serializable {
-    private transient Comic belongsTo;
+    private final transient Comic belongsTo;
     private String title;
     private int chapterNumber;
     private LocalDate releaseDate;
@@ -20,15 +20,7 @@ public class Chapter implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(getBelongsTo().getName());
-        sb.append("Title: " + title + "\n");
-        sb.append("Chapter:" + chapterNumber + "\n");
-        sb.append("releasedate: " + releaseDate.toString() + "\n");
-        sb.append("Liked: " + isLiked);
-
-        return sb.toString();
+        return String.format("Title: %s\nChapter: %d\nRelease date: %s\nLiked: %b", title, chapterNumber, releaseDate.toString(), isLiked);
     }
 
     public Comic getBelongsTo() {
@@ -66,4 +58,4 @@ public class Chapter implements Serializable {
     public void setLiked(boolean liked) {
         isLiked = liked;
     }
-};
+}
